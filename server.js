@@ -81,8 +81,8 @@ function handleTransaction(req, res) {
 
     responseData.balance = memoryFile.balance;
     // Write updated data to the json file
-    fs.writeFile(filePath, JSON.stringify(memoryFile), 'utf8', () => {
-      res.json(responseData);
+    return fs.writeFile(filePath, JSON.stringify(memoryFile), 'utf8', () => {
+      return res.json(responseData);
     });
   });
 }
