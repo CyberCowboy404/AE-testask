@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import TransactionsHistory from './components/TransactionsHistory';
 import Header from './components/Header';
 import AccountOpperations from './components/AccountOperations';
+import Transactions from './lib/agent';
 
 import './App.css';
 
@@ -13,6 +14,7 @@ export default class App extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.state = {
       balance: 0,
+      history: [],
     };
 
     if (!Cookies.get('user')) {
@@ -24,6 +26,16 @@ export default class App extends React.Component {
     }
   }
 
+  componentDidMount() {
+    Transactions.getAllTranactions().then((data) => {
+      const { history, balance } = data;
+      this.setState({
+        history,
+        balance,
+      });
+    });
+  }
+
   handleChange(balance) {
     this.setState({
       balance,
@@ -31,7 +43,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { balance } = this.state;
+    const { balance, history } = this.state;
 
     return (
       <div className="container">
@@ -40,7 +52,7 @@ export default class App extends React.Component {
 
         <main className="main">
           <AccountOpperations onBalanceChange={this.handleChange} />
-          <TransactionsHistory balance={balance} />
+          <TransactionsHistory balance={balance} history={history} />
         </main>
       </div>
     );

@@ -77,7 +77,7 @@ function handleTransaction(req, res) {
       responseData.balance = memoryFile.balance;
 
       fs.writeFile(filePath, JSON.stringify(memoryFile), 'utf8', () => {
-        res.json(JSON.stringify(responseData));
+        res.json(responseData);
       });
     }
   });

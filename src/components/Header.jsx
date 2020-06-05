@@ -7,8 +7,8 @@ export default function Header(props) {
   return (
     <header className="header">
       <section>
+        Current balance:
         {balance}
-        Current balance: 0
       </section>
     </header>
   );
