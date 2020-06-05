@@ -56,10 +56,10 @@ export default class AccountOpperations extends React.Component {
       const nAmount = Number(amount);
       const trimType = type.trim();
       Transactions.sendTransaction({ type: trimType, amount: nAmount }).then((data) => {
-        if (data.statusCode === 200) {
+        if (data.status === 200) {
           onBalanceChange(data.balance);
           this.setState({ error: { visible: false } });
-        } else if (data.statusCode !== 200) {
+        } else if (data.status !== 200) {
           this.setState({ error: { visible: true, message: data.error.message } });
         } else {
           this.setState({ error: { visible: true, message: 'Unhandled error' } });
