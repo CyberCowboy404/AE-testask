@@ -6,7 +6,7 @@ import Header from './components/Header';
 import AccountOpperations from './components/AccountOperations';
 import Transactions from './lib/agent';
 
-import './App.css';
+import './index.css';
 
 export default class App extends React.Component {
   constructor(props) {

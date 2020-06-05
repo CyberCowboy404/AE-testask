@@ -56,7 +56,6 @@ export default class AccountOpperations extends React.Component {
       const nAmount = Number(amount);
       const trimType = type.trim();
       Transactions.sendTransaction({ type: trimType, amount: nAmount }).then((data) => {
-        console.log('data: ', data);
         if (data.statusCode === 200) {
           onBalanceChange(data.balance);
           this.setState({ error: { visible: false } });

@@ -3,32 +3,51 @@ import React from 'react';
 
 export default function TransactionsHistory(props) {
   const { history } = props;
-  // console.log('data: ', data);
+  let block = '';
+
+  if (!history || !history.length) {
+    block = (
+      <tr>
+        <td colSpan="4" className="text-center">No transactions yet</td>
+      </tr>
+    );
+  } else {
+    block = history.map((el) => (
+      <tr className="row100 body" key={el.id}>
+        <td className="cell100 column1">{el.id}</td>
+        <td className="cell100 column2">{new Date(el.ts).toLocaleString()}</td>
+        <td className="cell100 column3">{el.type}</td>
+        <td className="cell100 column4">{el.amount}</td>
+      </tr>
+    ));
+  }
 
   return (
     <section>
-      <input type="text" />
-      <table>
-        <caption>Latest tranactions</caption>
-        <thead>
-          <tr>
-            <td>ID</td>
-            <td>Time</td>
-            <td>type</td>
-            <td>amount</td>
-          </tr>
-        </thead>
-        <tbody>
-          {history.map((el) => (
-            <tr key={el.key}>
-              <td>{el.id}</td>
-              <td>{new Date(el.ts).toLocaleString()}</td>
-              <td>{el.type}</td>
-              <td>{el.amount}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <h2>Latest tranactions</h2>
+      <input type="text" placeholder="Search" />
+      <div className="table100 ver1 m-b-110">
+        <div className="table100-head">
+          <table>
+            <thead>
+              <tr className="row100 head">
+                <th className="cell100 column1">ID</th>
+                <th className="cell100 column2">Time</th>
+                <th className="cell100 column3">Type</th>
+                <th className="cell100 column4">Amount</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+
+        <div className="table100-body">
+          <table>
+            <tbody>
+              {block}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </section>
   );
 }
