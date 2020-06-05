@@ -43,14 +43,13 @@ function handleTransaction(req, res) {
 
   if (wrongType || wrongAmount) {
     responseData = { statusCode: 400, error: { message: 'Bad data' } };
-    res.end(JSON.stringify(responseData));
+    res.json(JSON.stringify(responseData));
   }
 
   fs.readFile(filePath, { encoding: 'utf-8' }, (err, data) => {
     if (err) {
-      console.log(`received data: ${err}`);
       responseData = { statusCode: 400, error: { message: 'Can\'t find storage' } };
-      res.end(JSON.stringify(responseData));
+      res.json(JSON.stringify(responseData));
     } else {
       const memoryFile = JSON.parse(data);
 
@@ -58,7 +57,7 @@ function handleTransaction(req, res) {
         const temp = memoryFile.balance - amount;
         if (temp < 0) {
           responseData = { statusCode: 403, error: { message: 'Negative balance is Not allowed' } };
-          res.end(JSON.stringify(responseData));
+          res.json(JSON.stringify(responseData));
         } else {
           memoryFile.balance -= amount;
           responseData = { statusCode: 200 };
@@ -78,11 +77,10 @@ function handleTransaction(req, res) {
       responseData.balance = memoryFile.balance;
 
       fs.writeFile(filePath, JSON.stringify(memoryFile), 'utf8', () => {
-        res.end(JSON.stringify(responseData));
+        res.json(JSON.stringify(responseData));
       });
     }
   });
-
 }
 
 function getAllTranactions(req, res) {
@@ -102,8 +100,10 @@ function getAllTranactions(req, res) {
       });
     } else {
       fs.readFile(filePath, { encoding: 'utf-8' }, (err, data) => {
-        const memoryFile = JSON.parse(data);
-        res.end(JSON.stringify(memoryFile));
+        if (err) {
+          res.json({ statusCode: 400, error: { message: 'Can\'t find a file' } });
+        }
+        res.json(JSON.parse(data));
       });
     }
   });

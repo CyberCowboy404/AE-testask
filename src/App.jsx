@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import React from 'react';
 import Cookies from 'js-cookie';
 import TransactionsHistory from './components/TransactionsHistory';
@@ -14,11 +15,13 @@ export default class App extends React.Component {
       balance: 0,
     };
 
+    if (!Cookies.get('user')) {
+      Cookies.set('user', uniqId());
+    }
+
     function uniqId() {
       return `_${Math.random().toString(36).substr(2, 9)}`;
     }
-
-    Cookies.set('user', uniqId());
   }
 
   handleChange(balance) {

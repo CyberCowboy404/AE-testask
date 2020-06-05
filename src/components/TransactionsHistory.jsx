@@ -6,19 +6,22 @@ export default class TransactionsHistory extends React.Component {
     super(props);
 
     this.state = {
-      data: [],
+      history: [],
     };
   }
 
   componentDidMount() {
     Transactions.getAllTranactions().then((data = []) => {
       console.log('data: ', data);
-      this.setState({ data });
+      this.setState({
+        history: data.history,
+      });
     });
   }
 
   render() {
-    const { data } = this.state;
+    const { history } = this.state;
+    // console.log('data: ', data);
 
     return (
       <section>
@@ -28,15 +31,16 @@ export default class TransactionsHistory extends React.Component {
           <thead>
             <tr>
               <td>ID</td>
+              <td>Time</td>
               <td>type</td>
               <td>amount</td>
             </tr>
           </thead>
           <tbody>
-            {data.history.map((el) => (
+            {history.map((el) => (
               <tr key={el.key}>
                 <td>{el.id}</td>
-                <td>{el.time}</td>
+                <td>{new Date().toLocaleString()}</td>
                 <td>{el.type}</td>
                 <td>{el.amount}</td>
               </tr>
