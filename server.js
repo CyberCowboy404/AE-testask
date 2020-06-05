@@ -46,7 +46,7 @@ function handleTransaction(req, res) {
   // Return error if data didn't pass validation
   if (wrongType || wrongAmount) {
     responseData = { status: 400, error: { message: 'Bad data' } };
-    res.json(responseData);
+    return res.json(responseData);
   }
   // If data pass simpel validation get the user json data
   return fs.readFile(filePath, { encoding: 'utf-8' }, (err, data) => {
