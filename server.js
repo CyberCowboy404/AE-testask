@@ -48,7 +48,7 @@ function handleTransaction(req, res) {
     responseData = { status: 400, error: { message: 'Bad data' } };
     return res.json(responseData);
   }
-  // If data pass simpel validation get the user json data
+  // If data pass simple validation get the user json data
   return fs.readFile(filePath, { encoding: 'utf-8' }, (err, data) => {
     if (err) {
       responseData = { status: 400, error: { message: 'Can\'t find storage' } };
@@ -81,9 +81,7 @@ function handleTransaction(req, res) {
 
     responseData.balance = memoryFile.balance;
     // Write updated data to the json file
-    return fs.writeFile(filePath, JSON.stringify(memoryFile), 'utf8', () => {
-      return res.json(responseData);
-    });
+    return fs.writeFile(filePath, JSON.stringify(memoryFile), 'utf8', () => res.json(responseData));
   });
 }
 
