@@ -88,19 +88,26 @@ export default class AccountOpperations extends React.Component {
       <div>
         {errorBlock}
         <form onSubmit={this.makeOperation}>
-          <label htmlFor="type">
-            <select name="type" id="type" defaultValue="credit" onChange={this.handleSelect}>
-              <option value="credit">credit</option>
-              <option value="debt">debt</option>
-            </select>
-          </label>
 
-          <label htmlFor="amount">
-            <input value={amount} onChange={this.handleChange} type="number" />
-          </label>
+          <div className="form-wrapper-inner">
 
-          <button type="submit">Add</button>
+            <label htmlFor="type">
+              <select name="type" id="type" defaultValue="credit" onChange={this.handleSelect}>
+                <option value="credit">credit</option>
+                <option value="debt">debt</option>
+              </select>
+            </label>
+
+            <label htmlFor="amount">
+              <input value={amount} onChange={this.handleChange} type="number" />
+            </label>
+
+            <button type="submit">Add</button>
+
+          </div>
+
         </form>
+
       </div>
     );
   }

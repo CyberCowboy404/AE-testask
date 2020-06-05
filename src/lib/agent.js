@@ -17,10 +17,7 @@ const requests = {
 const Transactions = {
   sendTransaction: (data) => requests.post('/transactions', { data }),
   getAllTranactions: () => requests.get('/transactions'),
-  del: (slug) => requests.del(`/articles/${slug}`),
-  favorite: (slug) => requests.post(`/articles/${slug}/favorite`),
-  feed: () => requests.get('/articles/feed?limit=10&offset=0'),
-  create: (article) => requests.post('/articles', { article }),
+  getTransactionById: (slug) => requests.del(`/transactions/${slug}`),
 };
 
 export default Transactions;

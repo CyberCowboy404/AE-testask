@@ -13,7 +13,7 @@ body {
 }
 
 .container {
-  min-height: 100vh;
+  padding-bottom: 80px;
   padding: 0 0.5rem;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -39,6 +39,45 @@ table caption, form {
   text-align: center;
 }
 
+input {
+  padding: 7px 5px 7px 15px;
+  border-radius: 3px;
+  border: solid 1px #ced4da;
+  font-size: 1rem;
+}
+
+button {
+  cursor: pointer;
+  padding: 7px 0;
+  background: #fff;
+  border: solid 1px #ced4da;
+  width: 50px;
+  border-radius: 3px;
+  font-size: 1rem;
+}
+
+button:active {
+  background-color: #e6e6e6;
+}
+
+.form-wrapper-inner {
+  display: flex;
+  align-items: center;
+}
+
+.form-wrapper-inner > * {
+  margin-right: 25px;
+}
+
+.errors {
+  color: red;
+}
+
+select {
+  height: 36px;
+  width: 89px;
+  font-size: 1rem;
+}
 /*//////////////////////////////////////////////////////////////////
 [ Table ]*/
 
@@ -126,6 +165,10 @@ th, td {
   line-height: 1.4;
 }
 
+.table100.ver1 .text-red td {
+  color:#9d1d1d;
+}
+
 .table100.ver1 .table100-body tr:nth-child(even) {
   background-color: #f8f6ff;
 }
@@ -140,6 +183,7 @@ th, td {
   -webkit-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
   -o-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
   -ms-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
+  margin-bottom: 80px;
 }
 
 .table100.ver1 .ps__rail-y {

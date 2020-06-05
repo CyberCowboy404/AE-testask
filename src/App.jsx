@@ -27,6 +27,10 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
+    this.getTransactions();
+  }
+
+  getTransactions() {
     Transactions.getAllTranactions().then((data) => {
       const { history, balance } = data;
       this.setState({
@@ -36,10 +40,8 @@ export default class App extends React.Component {
     });
   }
 
-  handleChange(balance) {
-    this.setState({
-      balance,
-    });
+  handleChange() {
+    this.getTransactions();
   }
 
   render() {
@@ -47,12 +49,10 @@ export default class App extends React.Component {
 
     return (
       <div className="container">
-
         <Header balance={balance} />
-
         <main className="main">
           <AccountOpperations onBalanceChange={this.handleChange} />
-          <TransactionsHistory balance={balance} history={history} />
+          <TransactionsHistory history={history} />
         </main>
       </div>
     );
