@@ -13,7 +13,6 @@ export default class TransactionsHistory extends React.Component {
     const term = event.target.value;
 
     onSearch(term);
-    console.log(this.history);
   }
 
   render() {

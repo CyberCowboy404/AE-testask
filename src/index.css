@@ -22,7 +22,7 @@ body {
   align-content:flex-start;
 }
 
-.container .header, .container .main {
+.container .main {
   grid-column: 1 / -1;
 }
 

@@ -25,6 +25,7 @@ export default class AccountOpperations extends React.Component {
   handleChange(event) {
     let amount = event.target.value;
 
+    // Dont allow negative numbers
     if (amount < 0) {
       amount = Math.abs(amount);
     }
@@ -36,6 +37,7 @@ export default class AccountOpperations extends React.Component {
     this.setState({ type: event.target.value });
   }
 
+  // Save and validate tranaction
   makeOperation(event) {
     event.preventDefault();
     const { onBalanceChange } = this.props;
@@ -45,19 +47,24 @@ export default class AccountOpperations extends React.Component {
     };
 
     const { amount, type } = this.state;
-
+    // Validate amount input
     if (!amount || Number.isNaN(amount)) {
       error.visible = true;
       error.message = 'Wrong Amount!';
       this.setState({ error });
     }
 
+    // If input data clear trying to save it
     if (!error.visible) {
+      // Always good to double check everything
       const nAmount = Number(amount);
       const trimType = type.trim();
       Transactions.sendTransaction({ type: trimType, amount: nAmount }).then((data) => {
+        // 200 - everything ok
         if (data.status === 200) {
+          // Lifting state up
           onBalanceChange(data.balance);
+          // Hide previous errors if they are exists
           this.setState({ error: { visible: false } });
         } else if (data.status !== 200) {
           this.setState({ error: { visible: true, message: data.error.message } });
@@ -73,7 +80,7 @@ export default class AccountOpperations extends React.Component {
   render() {
     const { amount, error } = this.state;
     let errorBlock = '';
-
+    // If any errors show messages
     if (error.visible) {
       errorBlock = (
         <section className="errors">

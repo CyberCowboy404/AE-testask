@@ -43,10 +43,13 @@ export default class App extends React.Component {
     });
   }
 
+  // Using for lifting state, updating current balance and tranaction history,
+  // when user succesfully did a tranaction
   handleChange() {
     this.getTransactions();
   }
 
+  // Using for state lifting when user types in search box
   handleSearch(term) {
     Transactions.getTransactionById(term).then((data) => {
       const history = data.data;
@@ -61,8 +64,8 @@ export default class App extends React.Component {
 
     return (
       <div className="container">
-        <Header balance={balance} />
         <main className="main">
+          <Header balance={balance} />
           <AccountOpperations onBalanceChange={this.handleChange} />
           <TransactionsHistory onSearch={this.handleSearch} history={history} />
         </main>
