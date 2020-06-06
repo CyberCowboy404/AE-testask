@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import Transactions from '../lib/agent';
 
 export default class TransactionsHistory extends React.Component {
   constructor(props) {
@@ -10,11 +9,11 @@ export default class TransactionsHistory extends React.Component {
   }
 
   handleChange(event) {
+    const { onSearch } = this.props;
     const term = event.target.value;
-    Transactions.getTransactionById(term).then((data) => {
-      console.log('data: ', data);
-      console.log('data: ', this);
-    });
+
+    onSearch(term);
+    console.log(this.history);
   }
 
   render() {
@@ -25,7 +24,7 @@ export default class TransactionsHistory extends React.Component {
     if (!history || !history.length) {
       block = (
         <tr>
-          <td colSpan="4" className="text-center">No transactions yet</td>
+          <td colSpan="4" className="cell100 text-center">No transactions</td>
         </tr>
       );
     } else {

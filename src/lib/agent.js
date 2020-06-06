@@ -17,7 +17,7 @@ const requests = {
 const Transactions = {
   sendTransaction: (data) => requests.post('/transactions', { data }),
   getAllTranactions: () => requests.get('/transactions'),
-  getTransactionById: (slug) => requests.del(`/transactions/${slug}`),
+  getTransactionById: (slug) => requests.get(`/transaction?slug=${slug}`),
 };
 
 export default Transactions;

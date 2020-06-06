@@ -19,6 +19,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(`${__dirname}/build/index.html`));
 });
 
+app.get('/api/transaction', getTransaction);
 app.get('/api/transactions', getAllTranactions);
 
 app.post('/api/transactions', handleTransaction);
@@ -72,7 +73,7 @@ function handleTransaction(req, res) {
       responseData = { status: 200 };
     }
     // In history we save all metadata relative to the transaction
-    memoryFile.history.push({
+    memoryFile.history.unshift({
       id,
       ts,
       amount,
@@ -114,6 +115,21 @@ function getAllTranactions(req, res) {
         res.json(JSON.parse(data));
       });
     }
+  });
+}
+
+function getTransaction(req, res) {
+  const filePath = path.join(__dirname, 'data', `${req.cookies.user}.json`);
+  const { slug } = req.query;
+
+  return fs.readFile(filePath, { encoding: 'utf-8' }, (err, file) => {
+    if (err) {
+      return res.json({ status: 400, error: { message: 'Can\'t find a file' } });
+    }
+    // Send existed user data to the client
+    const data = JSON.parse(file);
+    const filteredData = data.history.filter((elem) => elem.id.indexOf(slug) !== -1);
+    return res.json({ data: filteredData });
   });
 }
 

@@ -11,12 +11,15 @@ import './index.css';
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
+
     this.state = {
       balance: 0,
       history: [],
     };
 
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
+    // Set cookie and use it to save data for different users
     if (!Cookies.get('user')) {
       Cookies.set('user', uniqId());
     }
@@ -44,6 +47,15 @@ export default class App extends React.Component {
     this.getTransactions();
   }
 
+  handleSearch(term) {
+    Transactions.getTransactionById(term).then((data) => {
+      const history = data.data;
+      this.setState({
+        history,
+      });
+    });
+  }
+
   render() {
     const { balance, history } = this.state;
 
@@ -52,7 +64,7 @@ export default class App extends React.Component {
         <Header balance={balance} />
         <main className="main">
           <AccountOpperations onBalanceChange={this.handleChange} />
-          <TransactionsHistory history={history} />
+          <TransactionsHistory onSearch={this.handleSearch} history={history} />
         </main>
       </div>
     );

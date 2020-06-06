@@ -183,7 +183,7 @@ th, td {
   -webkit-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
   -o-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
   -ms-box-shadow: 0 0px 40px 0px rgba(0, 0, 0, 0.15);
-  margin-bottom: 80px;
+  margin: 20px 0;
 }
 
 .table100.ver1 .ps__rail-y {
