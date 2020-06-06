@@ -37,7 +37,7 @@
   },
   "scripts": {
     "watch": "npm-watch",
-    "start": "npm run build & node server",
+    "start": "npm i && npm run build && node server",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
