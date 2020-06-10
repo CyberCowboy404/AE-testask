@@ -2,25 +2,27 @@
 /* eslint-disable no-underscore-dangle */
 const fs = require('fs');
 const messages = require('./errorMessages');
+const dummyData = require('./dummyData');
 
 class Storage {
-  constructor(storagePath) {
+  constructor(storagePath = null) {
     this.inited = false;
     this.storagePath = storagePath;
     this.memory = null;
+    this.responseData = {};
+    this.dummyData = dummyData;
   }
 
   initMemory() {
     return new Promise((resolve, reject) => {
-      fs.access(this.storagePath, (error) => {
+      if (!this.storagePath) {
+        return reject({ message: messages.storage.path });
+      }
+      return fs.access(this.storagePath, (error) => {
         // File not exist
         if (error) {
-          const data = {
-            balance: 0,
-            history: [],
-          };
           // Create file and init to memory
-          return this.saveData(data, this._readStorageFile).then(resolve).catch(reject);
+          return this.saveData(this.dummyData).then(resolve).catch(reject);
         }
         // Init file to memory
         return this._readStorageFile().then(resolve).catch(reject);
@@ -30,6 +32,9 @@ class Storage {
 
   saveData(data) {
     return new Promise((resolve, reject) => {
+      if (!this.storagePath) {
+        reject({ message: messages.storage.path });
+      }
       fs.writeFile(this.storagePath, JSON.stringify(data),
         'utf8', (err) => {
           if (err) {
@@ -42,6 +47,9 @@ class Storage {
 
   _readStorageFile() {
     return new Promise((resolve, reject) => {
+      if (!this.storagePath) {
+        reject({ message: messages.storage.path });
+      }
       fs.readFile(this.storagePath, { encoding: 'utf-8' }, (err, data) => {
         if (err) {
           return reject(this._handleErrorStatus(messages.errors.cantFind, err));
@@ -60,6 +68,8 @@ class Storage {
     this.memory = data;
     this.responseData = messages.status.inited;
     this.inited = true;
+
+    return true;
   }
 }
 

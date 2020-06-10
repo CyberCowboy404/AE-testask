@@ -10,6 +10,9 @@ const errors = {
     inited: { status: 200, message: 'Memory file has been inited' },
     added: { status: 200, message: 'Tranaction was sucessfully added' },
   },
+  storage: {
+    path: 'You should specify storage path before using',
+  },
 };
 
 module.exports = errors;
