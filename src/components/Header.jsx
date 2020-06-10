@@ -2,13 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function Header(props) {
-  const { balance } = props;
+  const { balance, userId } = props;
 
   return (
     <header className="header">
       <section>
-        Current balance:
-        {balance}
+        <p>
+          Current balance:
+          {balance}
+        </p>
+        <p>
+          Current User ID:
+          {userId}
+        </p>
       </section>
     </header>
   );
@@ -16,8 +22,10 @@ export default function Header(props) {
 
 Header.propTypes = {
   balance: PropTypes.number,
+  userId: PropTypes.string,
 };
 
 Header.defaultProps = {
   balance: 0,
+  userId: 'Initing...',
 };

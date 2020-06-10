@@ -7,7 +7,7 @@ class Storage {
   constructor(storagePath) {
     this.inited = false;
     this.storagePath = storagePath;
-    this.memoryFile = null;
+    this.memory = null;
   }
 
   initMemory() {
@@ -20,7 +20,7 @@ class Storage {
             history: [],
           };
           // Create file and init to memory
-          return this._writeFileJSON(data, this._readStorageFile).then(resolve).catch(reject);
+          return this.saveData(data, this._readStorageFile).then(resolve).catch(reject);
         }
         // Init file to memory
         return this._readStorageFile().then(resolve).catch(reject);
@@ -28,7 +28,7 @@ class Storage {
     });
   }
 
-  _writeFileJSON(data) {
+  saveData(data) {
     return new Promise((resolve, reject) => {
       fs.writeFile(this.storagePath, JSON.stringify(data),
         'utf8', (err) => {
@@ -57,7 +57,7 @@ class Storage {
   }
 
   _initMemory(data) {
-    this.memoryFile = data;
+    this.memory = data;
     this.responseData = messages.status.inited;
     this.inited = true;
   }

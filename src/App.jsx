@@ -30,7 +30,7 @@ export default class App extends React.Component {
 
   getTransactions() {
     Transactions.getAllTranactions().then((data) => {
-      console.log('data: ', typeof data);
+      console.log('data: ', data);
       const { history, balance } = data;
       this.setState({
         history,
@@ -62,11 +62,12 @@ export default class App extends React.Component {
 
   render() {
     const { balance, history } = this.state;
+    const userId = Cookies.get('user');
 
     return (
       <div className="container">
         <main className="main">
-          <Header balance={balance} />
+          <Header balance={balance} userId={userId} />
           <AccountOpperations onBalanceChange={this.handleChange} />
           <TransactionsHistory onSearch={this.handleSearch} history={history} />
         </main>

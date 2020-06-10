@@ -11,26 +11,24 @@ class TransactionController {
   constructor() {
     this.types = new Set(['credit', 'debt']);
     this.responseData = { status: null, error: { message: null } };
-    this.inited = false;
-    this.filePath = null;
-    this.memoryFile = null;
   }
 
   // If json file don't exist - create. Else init it to memory
-  init(req) {
+  async init(req) {
     const filePath = path.join(__dirname, '../', 'data', `${req.cookies.user}.json`);
-
     this.storage = new Storage(filePath);
 
-    return this.storage.initMemory();
+    if (!this.storage.inited) {
+      await this.storage.initMemory();
+      return this.storage.memory;
+    }
   }
 
   async createTransaction(req, res) {
     try {
       // If memory didn't exist, try to init it
-      if (!this.inited) {
-        await this.init(req);
-      }
+      await this.init(req);
+
       const { type, amount } = req.body.data;
       const ts = new Date().getTime();
       const id = this._uniqId();
@@ -46,22 +44,25 @@ class TransactionController {
         return res.json(this.responseData);
       }
 
+      const transaction = { history: [] };
       // Calculate how much we should add to the account
-      const temp = type === 'debt' ? this.memoryFile.balance - amount : this.memoryFile.balance + amount;
+      const balance = type === 'debt'
+        ? this.storage.memory.balance - amount
+        : this.storage.memory.balance + amount;
       // Update account value
-      this.memoryFile.balance = temp;
+      transaction.balance = balance;
       // Success status
       this.responseData = messages.status.added;
-      this.responseData.balance = this.memoryFile.balance;
+      this.responseData.balance = transaction.balance;
       // In history we save all metadata relative to the transaction
-      this.memoryFile.history.unshift({
+      transaction.history.unshift({
         id,
         ts,
         amount,
         type,
       });
       // Save result to the file
-      this._writeFileJSON(this.memoryFile);
+      this.storage.saveData(transaction);
 
       return res.json(this.responseData);
     } catch (e) {
@@ -72,10 +73,8 @@ class TransactionController {
   // Return all transactions also init memory file if not inited yet.
   async getAllTranactions(req, res) {
     try {
-      if (!this.inited) {
-        await this.init(req);
-      }
-      res.json(this.memoryFile);
+      await this.init(req);
+      res.json(this.storage.memory);
     } catch (e) {
       console.log('getAllTranactions: ', e);
     }
@@ -84,9 +83,9 @@ class TransactionController {
   // Return transaction by id.
   getTransactionById(req, res) {
     const { slug } = req.query;
-    const filteredData = this.memoryFile.history.filter((elem) => elem.id.indexOf(slug) !== -1);
+    const data = this.storage.memory.history.filter((elem) => elem.id.indexOf(slug) !== -1);
 
-    return res.json({ data: filteredData });
+    return res.json({ data });
   }
 
   _isRightType(value) {
@@ -100,7 +99,7 @@ class TransactionController {
   _isValidAfterDebt(type, amount) {
     let result = true;
     if (type === 'debt') {
-      result = (this.memoryFile.balance - amount) >= 0;
+      result = (this.storage.memory.balance - amount) >= 0;
     }
     return result;
   }
