@@ -1,9 +1,9 @@
 # Simple-Accounting React and Nodejs/Express app
 
 ## Description
-This is a simple accounting application which allow you to store your accoutn balance.
+This is a simple accounting application which allow you to store your account balance.
 
-Using application you can add(credit) funds to your account or subtract(debt) them.
+Using application you can add funds to your account or subtract them.
 
 For data storage we use simple JSON files.
 
