@@ -1,3 +1,52 @@
-## To run a project
+# Simple-Accounting React and Nodejs/Express app
 
-### `npm start`
+## Description
+This is a simple accounting application which allow you to store your account balance.
+
+Using application you can add funds to your account or subtract them.
+
+For data storage we use simple JSON files.
+
+When you visit a page, application set cookie with random ID which be using to store different files relative to the user session.
+
+## To start app
+
+Install all necassary node moules
+```sh
+  npm i
+```
+Run server API
+```sh
+  node app.js
+```
+Build react files
+```sh
+  npm run build
+```
+
+Now in your browser open `http://localhost:3000`
+
+## Another Commands
+
+To quckly setup a project. Run build and API server
+```sh
+npm run start
+```
+Rebuild production front end build when you changed files
+```sh
+npm run watch
+```
+Start front end development server(without api)
+```sh
+npm run front
+```
+Build production build(front end)
+```sh
+npm run build
+```
+Run front end tests
+```sh
+npm run test
+```
+
+
