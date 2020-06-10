@@ -11,14 +11,15 @@ class TransactionController {
   constructor() {
     this.types = new Set(['credit', 'debt']);
     this.responseData = { status: null, error: { message: null } };
+    this.storage = new Storage();
   }
 
   // If json file don't exist - create. Else init it to memory
   async init(req) {
-    const filePath = path.join(__dirname, '../', 'data', `${req.cookies.user}.json`);
-    this.storage = new Storage(filePath);
-
     if (!this.storage.inited) {
+      const filePath = path.join(__dirname, '../', 'data', `${req.cookies.user}.json`);
+      this.storage.storagePath = filePath;
+
       await this.storage.initMemory();
       return this.storage.memory;
     }
@@ -44,7 +45,8 @@ class TransactionController {
         return res.json(this.responseData);
       }
 
-      const transaction = { history: [] };
+      const transaction = {};
+      transaction.history = this.storage.memory.history;
       // Calculate how much we should add to the account
       const balance = type === 'debt'
         ? this.storage.memory.balance - amount
