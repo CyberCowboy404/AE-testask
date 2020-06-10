@@ -3,9 +3,9 @@
 /* eslint-disable prefer-object-spread */
 /* eslint-disable consistent-return */
 /* eslint-disable class-methods-use-this */
-const fs = require('fs');
 const path = require('path');
 const messages = require('./errorMessages');
+const Storage = require('./storage');
 
 class TransactionController {
   constructor() {
@@ -18,25 +18,11 @@ class TransactionController {
 
   // If json file don't exist - create. Else init it to memory
   init(req) {
-    if (this.inited) return;
+    const filePath = path.join(__dirname, '../', 'data', `${req.cookies.user}.json`);
 
-    this.filePath = path.join(__dirname, '../', 'data', `${req.cookies.user}.json`);
+    this.storage = new Storage(filePath);
 
-    return new Promise((resolve, reject) => {
-      fs.access(this.filePath, (error) => {
-        // File not exist
-        if (error) {
-          const data = {
-            balance: 0,
-            history: [],
-          };
-          // Create file and init to memory
-          return this._writeFileJSON(data, this._readStorageFile).then(resolve).catch(reject);
-        }
-        // Init file to memory
-        return this._readStorageFile().then(resolve).catch(reject);
-      });
-    });
+    return this.storage.initMemory();
   }
 
   async createTransaction(req, res) {
@@ -101,37 +87,6 @@ class TransactionController {
     const filteredData = this.memoryFile.history.filter((elem) => elem.id.indexOf(slug) !== -1);
 
     return res.json({ data: filteredData });
-  }
-
-  _writeFileJSON(data) {
-    return new Promise((resolve, reject) => {
-      fs.writeFile(this.filePath, JSON.stringify(data),
-        'utf8', (err) => {
-          if (err) {
-            this.responseData = messages.errors.cantWrite;
-            return reject({ ...err, ...this.responseData });
-          }
-          return resolve(this._initMemory(data));
-        });
-    });
-  }
-
-  _readStorageFile() {
-    return new Promise((resolve, reject) => {
-      fs.readFile(this.filePath, { encoding: 'utf-8' }, (err, data) => {
-        if (err) {
-          this.responseData = messages.errors.cantFind;
-          return reject({ ...err, ...this.responseData });
-        }
-        return resolve(this._initMemory(JSON.parse(data)));
-      });
-    });
-  }
-
-  _initMemory(data) {
-    this.memoryFile = data;
-    this.responseData = messages.status.inited;
-    this.inited = true;
   }
 
   _isRightType(value) {

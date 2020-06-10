@@ -4,7 +4,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
-const TransactionController = require('./server/transaction.controller');
+const TransactionController = require('./server/transaction');
 
 const controller = new TransactionController();
 
