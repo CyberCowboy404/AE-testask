@@ -67,7 +67,7 @@ export default class AccountOpperations extends React.Component {
           // Hide previous errors if they are exists
           this.setState({ error: { visible: false } });
         } else if (data.status !== 200) {
-          this.setState({ error: { visible: true, message: data.error.message } });
+          this.setState({ error: { visible: true, message: data.message } });
         } else {
           this.setState({ error: { visible: true, message: 'Unhandled error' } });
         }
@@ -79,6 +79,7 @@ export default class AccountOpperations extends React.Component {
 
   render() {
     const { amount, error } = this.state;
+
     let errorBlock = '';
     // If any errors show messages
     if (error.visible) {

@@ -19,28 +19,29 @@ export default class App extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
-    // Set cookie and use it to save data for different users
-    if (!Cookies.get('user')) {
-      Cookies.set('user', uniqId());
-    }
-
-    function uniqId() {
-      return `_${Math.random().toString(36).substr(2, 9)}`;
-    }
   }
 
   componentDidMount() {
+    if (!Cookies.get('user')) {
+      Cookies.set('user', this.uniqId());
+    }
     this.getTransactions();
   }
 
   getTransactions() {
     Transactions.getAllTranactions().then((data) => {
+      console.log('data: ', typeof data);
       const { history, balance } = data;
       this.setState({
         history,
         balance,
       });
     });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  uniqId() {
+    return `_${Math.random().toString(36).substr(2, 9)}`;
   }
 
   // Using for lifting state, updating current balance and tranaction history,
